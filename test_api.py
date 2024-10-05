@@ -2,7 +2,7 @@ import requests
 
 url = 'http://127.0.0.1:8000/modify-repo'  # Replace with your URL
 data = {
-    'repoUrl': 'test1',
+    'repoUrl': 'https://github.com/jayhack/llm.sh',
     'prompt': 'test2'
 }
 
