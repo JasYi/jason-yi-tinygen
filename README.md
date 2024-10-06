@@ -4,6 +4,8 @@
 
 run on https://jason-yi-tinygen.vercel.app/
 
+endpoint is on /modify-repo
+
 ## Methodology
 
 To handle codebases that often hit the context limit, I created a RAG system to only grab relevant files.
