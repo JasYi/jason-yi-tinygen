@@ -17,3 +17,7 @@ async def root():
 async def root(item: Item):
     diff = prompt_to_diff(item.repoUrl, item.prompt)
     return diff
+
+if __name__ == '__main__':
+    import uvicorn
+    uvicorn.run(app)
