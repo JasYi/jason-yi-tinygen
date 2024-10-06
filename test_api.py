@@ -2,8 +2,8 @@ import requests
 
 url = 'http://127.0.0.1:8000/modify-repo'  # Replace with your URL
 data = {
-    'repoUrl': 'https://github.com/jayhack/llm.sh',
-    'prompt': 'test2'
+    'repoUrl': 'https://github.com/JasYi/Formulate',
+    'prompt': 'change all openai calls to use anthropic claude'
 }
 
 response = requests.post(url, json=data)

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from helpers.github_calls import get_repo_files
+# from helpers.github_calls import get_repo_files
+from helpers.ai_calls import prompt_to_diff
 
 app = FastAPI()
 
@@ -14,5 +15,5 @@ async def root():
 
 @app.post("/modify-repo")
 async def root(item: Item):
-    repo_files = get_repo_files(item.repoUrl)
-    return {"message": f"Repo Files: {repo_files}"}
+    diff = prompt_to_diff(item.repoUrl, item.prompt)
+    return diff
