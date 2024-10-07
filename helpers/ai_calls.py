@@ -207,6 +207,7 @@ def generate_reflection(gitFiles: dict, prompt: str, diff: str):
     system_prompt = (
         "You are an assistant that generates an analysis on a generated git diff based on user prompts."
         " Ensure that the diff is in a valid unified diff format and that it accomplishes the prompt."
+        " Also ensure that the diff only contains the unified diff and no additional text."
         " If the diff is invalid, provide feedback on how to improve it and regenerate a new diff through the function call."
         " Below is the current state of the repository's files, the user's prompt, and the generated diff."
     )

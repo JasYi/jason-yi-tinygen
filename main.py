@@ -15,7 +15,7 @@ async def root():
 
 @app.post("/modify-repo")
 async def root(item: Item):
-    diff = prompt_to_diff(item.repoUrl, item.prompt)
+    reflection, diff = prompt_to_diff(item.repoUrl, item.prompt)
     return diff
 
 if __name__ == '__main__':

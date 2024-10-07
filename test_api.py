@@ -1,6 +1,6 @@
 import requests
 
-url = 'https://jason-yi-tinygen.vercel.app/modify-repo'  # Replace with your URL
+url = 'http://localhost:8000/modify-repo'  # Replace with your URL
 data = {
     'repoUrl': 'https://github.com/JasYi/Formulate',
     'prompt': 'modify the readme to include the header hello'
