@@ -1,12 +1,18 @@
-# Jason Yi Tinygen
+# Jason Yi TinyGen
 
-## Running Tinygen
+## Hitting TinyGen
 
 endpoint is at https://jason-yi-tinygen.vercel.app/modify-repo
 
 if it returns a 504 error that means that the process took too long. This is something done by Vercel as functions can only run for a maximum of 300s. This means that the repo may be too big. If this is a problem please email me at jsy37 [at] georgetown [dot] edu.
 
 I have also done my best to speed up this process by parallelizing every step that I can so if this becomes an issue I can quickly upgrade to Vercel Pro.
+
+## Running TinyGen
+
+Run `pip install -r requirements.txt`
+
+Run `fastapi run main.py`
 
 ## Methodology
 
