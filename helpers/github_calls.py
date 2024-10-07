@@ -2,6 +2,8 @@ from github import Github
 from urllib.parse import urlparse
 import os
 from dotenv import load_dotenv
+from concurrent.futures import ThreadPoolExecutor
+import threading
 
 load_dotenv()
 
@@ -69,8 +71,7 @@ def read_all_files_pygithub(repo_url, file_names):
     files_contents = {}
     queue = file_names[:]
     
-    while queue:
-        content = queue.pop(0)
+    def process_file(content):
         file_obj = repo.get_contents(content)
         print("Reading file:", content)
         if file_obj.type == "file":
@@ -82,6 +83,9 @@ def read_all_files_pygithub(repo_url, file_names):
                     print(f"File {file_obj.path} is not readable file.")
             except Exception as e:
                 print(f"Error reading file {file_obj.path}: {e}")
+    
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        executor.map(process_file, queue)
     
     return files_contents
 
