@@ -6,6 +6,22 @@ import time
 from concurrent.futures import ThreadPoolExecutor
 from typing import Dict, Any, Tuple, List
 import numpy as np
+import tiktoken
+
+def count_tokens(text: str, model: str = "gpt-4o") -> int:
+    """
+    Counts the number of tokens in a given text string based on the specified OpenAI model.
+
+    Parameters:
+    - text (str): The input string to tokenize.
+    - model (str): The OpenAI model name. Defaults to "gpt-4".
+
+    Returns:
+    - int: The number of tokens in the input text.
+    """
+    enc = tiktoken.encoding_for_model(model)
+    return len(enc.encode(text))
+
 
 def summarize_code(filename: str, code: str, model: str = "gpt-4o-mini") -> str:
     """
@@ -35,7 +51,8 @@ def summarize_code(filename: str, code: str, model: str = "gpt-4o-mini") -> str:
             max_tokens=500  # Adjust based on desired summary length
         )
         summary = response.choices[0].message.content
-        return summary
+        num_tokens = count_tokens(code, 'gpt-4o')
+        return summary, num_tokens
     except Exception as e:
         print(f"Error generating summary: {e}")
 
@@ -62,18 +79,21 @@ def embed_text(text: str, model: str = "text-embedding-3-small") -> list:
 def process_file(filename_code_tuple: Tuple[str, str]) -> Tuple[str, Dict[str, Any]]:
     filename, code = filename_code_tuple
     try:
-        summary = summarize_code(filename, code)
+        summary, num_tokens = summarize_code(filename, code)
         embedding = embed_text(summary)
         result = {
             "summary": summary,
-            "embedding": embedding
+            "embedding": embedding,
+            "tokens": num_tokens
         }
         print(f"Successfully processed '{filename}'.\n")
+        print(f"Num tokens: {num_tokens}")
     except Exception as e:
         print(f"Error processing '{filename}': {e}\n")
         result = {
             "summary": None,
             "embedding": None,
+            "tokens": 0,
             "error": str(e)
         }
     return filename, result
@@ -124,6 +144,15 @@ def get_most_relevant_files(
 
     # Sort the files based on similarity scores in descending order
     sorted_files = sorted(similarities.items(), key=lambda item: item[1], reverse=True)
+    context_out = []
+    token_counter = 0
+    for file in sorted_files:
+        token_counter += embeddings[file[0]]['tokens']
+        context_out.append(file)
+        print("ADDING TO CONTEXT, AT: ", token_counter, " TOKENS")
+        if token_counter >= 10000:
+            break
+    print("GETTING CONTEXT FROM, ", len(sorted_files), " FILES")
     return sorted_files[:top_n]
 
 
